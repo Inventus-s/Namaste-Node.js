@@ -39,11 +39,12 @@ let x = 10, y = 3, z = 10;
 // }
 
 //  Check if traingle is equilateral, isosceles or scalene
-let a = 3, b = 3, c = 3;
-if (a === b && b === c) {
-    console.log("The triangle is equilateral");
-} else if (a === b || b === c || a === c) {
-    console.log("The triangle is isosceles");
-} else {
-    console.log("The triangle is scalene");
-}
+// let a = 3, b = 3, c = 3;
+// if (a === b && b === c) {
+//     console.log("The triangle is equilateral");
+// } else if (a === b || b === c || a === c) {
+//     console.log("The triangle is isosceles");
+// } else {
+//     console.log("The triangle is scalene");
+// }
+
