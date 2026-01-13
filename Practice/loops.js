@@ -9,9 +9,17 @@
 
 // Print no. from 20 to 1 in decresing order - using while loop
 
-let i = 20;
+// let i = 20;
 
-while (i >= 1) {
-  console.log(i);
-  i--;
+// while (i >= 1) {
+//   console.log(i);
+//   i--;
+// }
+
+// Sum of all numbers from 1 to 10 - using for loop
+
+let sum = 0;
+
+for (let i = 1; i <= 10; i++) {
+  sum += i;
 }
