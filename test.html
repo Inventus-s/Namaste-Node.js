@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Table Structure - Submission Document</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #2980b9;
+            --bg-light: #f8f9fa;
+            --border-color: #dcdde1;
+            --text-color: #2f3640;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        p {
+            margin: 0 0 15px 0;
+            color: #57606f;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        th {
+            background-color: var(--bg-light);
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background-color: #fdfdfd;
+        }
+
+        .example-box {
+            background-color: var(--bg-light);
+            border: 1px dashed var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            white-space: pre-line;
+            page-break-inside: avoid;
+        }
+
+        .example-title {
+            font-family: inherit;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .relationship-diagram {
+            background-color: #2f3542;
+            color: #f1f2f6;
+            font-family: "Courier New", Courier, monospace;
+            padding: 20px;
+            border-radius: 6px;
+            white-space: pre;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .note-blockquote {
+            border-left: 4px solid #e67e22;
+            background-color: #fffaf0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+            page-break-inside: avoid;
+        }
+
+        .note-blockquote h3 {
+            margin: 0 0 8px 0;
+            color: #d35400;
+            font-size: 16px;
+        }
+
+        @media print {
+            body {
+                padding: 20px;
+                font-size: 12pt;
+            }
+            .container {
+                max-width: 100%;
+            }
+            h2 {
+                margin-top: 30px;
+            }
+            .relationship-diagram {
+                background-color: #f8f9fa !important;
+                color: #2f3640 !important;
+                border: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Final Database Structure (D-Table)</h1>
+        <div class="subtitle">Normalized Relational Schema Design & Business Logic Constraints</div>
+    </header>
+
+    <p><strong>Design Implementation Note:</strong> The <code>status</code> attribute inside the <code>AVAILABILITY</code> catalog behaves strictly as an administrative operational flag (<code>ACTIVE</code> / <code>DISABLED</code>) to toggle visibility. Temporal expiration (past date/time boundaries) is computed programmatically at the application layer to preserve historical database integrity.</p>
+
+    <!-- 1. USERS -->
+    <h2>1. USERS</h2>
+    <p>Central repository handling unique identifying attributes for all platform actors (Hosts and Guests).</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%;">Column</th>
+                <th style="width: 20%;">Type</th>
+                <th style="width: 20%;">Constraint</th>
+                <th style="width: 40%;">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>id</strong></td>
+                <td>BIGINT</td>
+                <td>PRIMARY KEY</td>
+                <td>Unique identifier for the user.</td>
+            </tr>
+            <tr>
+                <td><strong>name</strong></td>
+                <td>VARCHAR(100)</td>
+                <td>NOT NULL</td>
+                <td>Display name of the user.</td>
+            </tr>
+            <tr>
+                <td><strong>email</strong></td>
+                <td>VARCHAR(255)</td>
+                <td>UNIQUE, NOT NULL</td>
+                <td>Unique communication and auth identifier.</td>
+            </tr>
+            <tr>
+                <td><strong>timezone</strong></td>
+                <td>VARCHAR(50)</td>
+                <td>NOT NULL</td>
+                <td>User's designated local timezone context.</td>
+            </tr>
+            <tr>
+                <td><strong>created_at</strong></td>
+                <td>TIMESTAMP</td>
+                <td>DEFAULT NOW()</td>
+                <td>Audit timestamp of record creation.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 2. AVAILABILITY -->
+    <h2>2. AVAILABILITY</h2>
+    <p>Stores the recurring weekly baseline availability configurations declared by hosts.</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 22%;">Column</th>
+                <th style="width: 18%;">Type</th>
+                <th style="width: 22%;">Constraint</th>
+                <th style="width: 38%;">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>id</strong></td>
+                <td>BIGINT</td>
+                <td>PRIMARY KEY</td>
+                <td>Unique availability block ID.</td>
+            </tr>
+            <tr>
+                <td><strong>user_id</strong></td>
+                <td>BIGINT</td>
+                <td>FOREIGN KEY &rarr; users.id</td>
+                <td>Relates availability config to a specific host.</td>
+            </tr>
+            <tr>
+                <td><strong>title</strong></td>
+                <td>VARCHAR(100)</td>
+                <td>NULL</td>
+                <td>Optional labeling for the booking type.</td>
+            </tr>
+            <tr>
+                <td><strong>start_date</strong></td>
+                <td>DATE</td>
+                <td>NOT NULL</td>
+                <td>The effective starting date for this schedule.</td>
+            </tr>
+            <tr>
+                <td><strong>end_date</strong></td>
+                <td>DATE</td>
+                <td>NULL</td>
+                <td>The boundary limit till when it is valid.</td>
+            </tr>
+            <tr>
+                <td><strong>start_time</strong></td>
+                <td>TIME</td>
+                <td>NOT NULL</td>
+                <td>Daily standard working window start time.</td>
+            </tr>
+            <tr>
+                <td><strong>end_time</strong></td>
+                <td>TIME</td>
+                <td>NOT NULL</td>
+                <td>Daily standard working window end time.</td>
+            </tr>
+            <tr>
+                <td><strong>recurrence_type</strong></td>
+                <td>ENUM</td>
+                <td>NOT NULL</td>
+                <td><code>NONE</code> / <code>DAILY</code> / <code>WEEKLY</code></td>
+            </tr>
+            <tr>
+                <td><strong>duration_minutes</strong></td>
+                <td>INT</td>
+                <td>NOT NULL</td>
+                <td>Slot length restrictions: <code>15</code>/<code>30</code>/<code>60</code>/<code>120</code></td>
+            </tr>
+            <tr>
+                <td><strong>status</strong></td>
+                <td>ENUM</td>
+                <td>NOT NULL</td>
+                <td>Administrative toggles: <code>ACTIVE</code> / <code>DISABLED</code></td>
+            </tr>
+            <tr>
+                <td><strong>created_at</strong></td>
+                <td>TIMESTAMP</td>
+                <td>DEFAULT NOW()</td>
+                <td>System timestamp tracking metadata entry.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="example-box">
+        <div class="example-title">Functional Mapping Example</div>
+        User: Mukund (Host)
+        Schedule Schedule: Monday &ndash; Friday, 09:00 &ndash; 17:00
+        Granularity: Duration = 30 Minutes
+        Status Flag: ACTIVE
+        Result: System actively synthesizes valid booking slots across the timeline.
+    </div>
+
+    <!-- 3. AVAILABILITY_EXCEPTIONS -->
+    <h2>3. AVAILABILITY_EXCEPTIONS</h2>
+    <p>Blacklist structure to cleanly isolate specific block-out window dates where bookings are frozen.</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%;">Column</th>
+                <th style="width: 20%;">Type</th>
+                <th style="width: 25%;">Constraint</th>
+                <th style="width: 35%;">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>id</strong></td>
+                <td>BIGINT</td>
+                <td>PRIMARY KEY</td>
+                <td>Unique exception block identifier.</td>
+            </tr>
+            <tr>
+                <td><strong>availability_id</strong></td>
+                <td>BIGINT</td>
+                <td>FOREIGN KEY &rarr; availability.id</td>
+                <td>Cascades back to the target schedule map.</td>
+            </tr>
+            <tr>
+                <td><strong>exception_date</strong></td>
+                <td>DATE</td>
+                <td>NOT NULL</td>
+                <td>The specific calendar date to override to dark.</td>
+            </tr>
+            <tr>
+                <td><strong>reason</strong></td>
+                <td>VARCHAR(255)</td>
+                <td>NULL</td>
+                <td>Contextual info (e.g., "Vacation Leave").</td>
+            </tr>
+            <tr>
+                <td><strong>created_at</strong></td>
+                <td>TIMESTAMP</td>
+                <td>DEFAULT NOW()</td>
+                <td>Creation audit timestamp.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="example-box">
+        <div class="example-title">Exception Mapping Example</div>
+        Target Date: 12 June
+        Context: "Annual Leave / Public Vacation"
+        Result: No slots generated for this date, despite parent availability rules.
+    </div>
+
+    <!-- 4. BOOKINGS -->
+    <h2>4. BOOKINGS</h2>
+    <p>Main transaction log mapping out concrete, confirmed appointment sessions.</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 20%;">Column</th>
+                <th style="width: 18%;">Type</th>
+                <th style="width: 25%;">Constraint</th>
+                <th style="width: 37%;">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>id</strong></td>
+                <td>BIGINT</td>
+                <td>PRIMARY KEY</td>
+                <td>Unique meeting receipt tracking handle.</td>
+            </tr>
+            <tr>
+                <td><strong>availability_id</strong></td>
+                <td>BIGINT</td>
+                <td>FOREIGN KEY &rarr; availability.id</td>
+                <td>Links appointment directly back to source profile.</td>
+            </tr>
+            <tr>
+                <td><strong>host_user_id</strong></td>
+                <td>BIGINT</td>
+                <td>FOREIGN KEY &rarr; users.id</td>
+                <td>Explicit linkage mapping the provider entity.</td>
+            </tr>
+            <tr>
+                <td><strong>guest_user_id</strong></td>
+                <td>BIGINT</td>
+                <td>FOREIGN KEY &rarr; users.id (NULL)</td>
+                <td>Optional link if user holds a platform account.</td>
+            </tr>
+            <tr>
+                <td><strong>guest_name</strong></td>
+                <td>VARCHAR(100)</td>
+                <td>NULL</td>
+                <td>Fallback descriptor string for external clients.</td>
+            </tr>
+            <tr>
+                <td><strong>guest_email</strong></td>
+                <td>VARCHAR(255)</td>
+                <td>NULL</td>
+                <td>Fallback communication node for external clients.</td>
+            </tr>
+            <tr>
+                <td><strong>booking_date</strong></td>
+                <td>DATE</td>
+                <td>NOT NULL</td>
+                <td>The target date allocated for this reservation.</td>
+            </tr>
+            <tr>
+                <td><strong>start_time</strong></td>
+                <td>TIME</td>
+                <td>NOT NULL</td>
+                <td>Appointment start wall time.</td>
+            </tr>
+            <tr>
+                <td><strong>end_time</strong></td>
+                <td>TIME</td>
+                <td>NOT NULL</td>
+                <td>Appointment conclusion wall time.</td>
+            </tr>
+            <tr>
+                <td><strong>status</strong></td>
+                <td>ENUM</td>
+                <td>NOT NULL</td>
+                <td>State mutations: <code>BOOKED</code> / <code>CANCELLED</code></td>
+            </tr>
+            <tr>
+                <td><strong>created_at</strong></td>
+                <td>TIMESTAMP</td>
+                <td>DEFAULT NOW()</td>
+                <td>Timestamp logging the generation event.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 5. BOOKING_HISTORY -->
+    <h2>5. BOOKING_HISTORY (Audit Log Component)</h2>
+    <p>Provides critical audit capabilities, tracking full historical state transitions of a booking for administrative verification.</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">Column</th>
+                <th style="width: 25%;">Type</th>
+                <th style="width: 50%;">Constraint / Permitted Values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>id</strong></td>
+                <td>BIGINT</td>
+                <td>PRIMARY KEY</td>
+            </tr>
+            <tr>
+                <td><strong>booking_id</strong></td>
+                <td>BIGINT</td>
+                <td>FOREIGN KEY &rarr; bookings.id</td>
+            </tr>
+            <tr>
+                <td><strong>action</strong></td>
+                <td>VARCHAR(50)</td>
+                <td>String state tracking logs: <code>CREATED</code>, <code>CANCELLED</code></td>
+            </tr>
+            <tr>
+                <td><strong>action_time</strong></td>
+                <td>TIMESTAMP</td>
+                <td>DEFAULT NOW()</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- RELATIONSHIPS -->
+    <h2>Structural Entity-Relationship Layout</h2>
+    <div class="relationship-diagram">
+  USERS [Parent Actor Catalog]
+    |
+    +----(1:N)----&gt; AVAILABILITY [Host Rules Base]
+    |                 |
+    |                 +----(1:N)----&gt; AVAILABILITY_EXCEPTIONS [Calendar Exceptions]
+    |
+    +----(1:N [Host Context])----&gt; BOOKINGS [Core Transaction Matrix]
+    |                               ^
+    +----(1:N [Guest Context])------+
+                                    |
+                                    +----(1:N)----&gt; BOOKING_HISTORY [Audit Trail]</div>
+
+    <!-- SLOT HANDLING LOGIC -->
+    <div class="note-blockquote">
+        <h3>System Slot Handling Architectural Logic</h3>
+        <p>To avoid massive data duplication and synchronization issues, <strong>time slots are dynamic vectors and are never statically stored inside the database.</strong> Instead, they are generated purely in-memory by application layer math loops using the parameters provided in the database.</p>
+        <p><strong>Example Allocation Matrix:</strong><br>
+        <code>Availability configuration: 09:00&ndash;11:00, Interval: 30 minutes.</code><br>
+        The backend code splits this window into internal runtime segments: <code>09:00&ndash;09:30</code>, <code>09:30&ndash;10:00</code>, <code>10:00&ndash;10:30</code>, and <code>10:30&ndash;11:00</code>.</p>
+        <p><strong>Filter Rules:</strong> If any synthesized slot has a <code>slot_datetime &lt; current_datetime</code>, or overlaps an entry in the Exceptions table, the UI automatically filters it out without requiring database alterations or state updates.</p>
+    </div>
+</div>
+
+</body>
+</html>
