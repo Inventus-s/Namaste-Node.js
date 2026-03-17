@@ -23,6 +23,6 @@
 
 // Arguments and parameters
 
-const add = (a, b) => a + b; // a and b are parameters
+// const add = (a, b) => a + b; // a and b are parameters
 
-console.log(add(5, 3)); // 5 and 3 are arguments, output will be 8
+// console.log(add(5, 3)); // 5 and 3 are arguments, output will be 8
