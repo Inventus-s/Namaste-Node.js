@@ -8,3 +8,7 @@ console.log(y.name); // Output: Mukund
 // Muatbility of objects
 x.age = 26; // Mutating the original object
 console.log(x);
+
+//  add new property to the object
+y.city = "Pune"; // Mutating the original object
+console.log(y);
