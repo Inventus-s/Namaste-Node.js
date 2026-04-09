@@ -12,3 +12,7 @@ console.log(x);
 //  add new property to the object
 y.city = "Pune"; // Mutating the original object
 console.log(y);
+
+// Deleting a property from the object
+delete x.age;
+console.log(x); // Output: { name: 'Mukund' }
