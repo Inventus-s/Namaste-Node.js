@@ -33,7 +33,17 @@ let x = 10, y = 3, z = 10;
 // }
 
 // Is a valid triangle
-let a = 3, b = 4, c = 5;
-if (a + b > c && a + c > b && b + c > a) {
-    console.log("The sides form a valid triangle");
+// let a = 3, b = 4, c = 5;
+// if (a + b > c && a + c > b && b + c > a) {
+//     console.log("The sides form a valid triangle");
+// }
+
+//  Check if traingle is equilateral, isosceles or scalene
+let a = 3, b = 3, c = 3;
+if (a === b && b === c) {
+    console.log("The triangle is equilateral");
+} else if (a === b || b === c || a === c) {
+    console.log("The triangle is isosceles");
+} else {
+    console.log("The triangle is scalene");
 }
