@@ -8,3 +8,6 @@ const person = {
 
 const keysOfPerson = Object.keys(person);
 console.log(keysOfPerson); // Output: [ 'name', 'age', 'city' ]
+
+const valuesOfPerson = Object.values(person);
+console.log(valuesOfPerson); // Output: [ 'John', 30, 'New York' ]
