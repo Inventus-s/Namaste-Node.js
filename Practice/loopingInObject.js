@@ -11,3 +11,7 @@ console.log(keysOfPerson); // Output: [ 'name', 'age', 'city' ]
 
 const valuesOfPerson = Object.values(person);
 console.log(valuesOfPerson); // Output: [ 'John', 30, 'New York' ]
+
+// Both key and value
+const entriesOfPerson = Object.entries(person);
+console.log(entriesOfPerson); // Output: [ [ 'name', 'John' ], [ 'age', 30 ], [ 'city', 'New York' ] ]
