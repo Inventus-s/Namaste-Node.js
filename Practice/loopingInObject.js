@@ -20,3 +20,8 @@ const person = {
 for (const value of Object.entries(person)) {
   console.log(value);
 }
+
+// for..in loop over object
+for (const key in person) {
+  console.log(`${key}: ${person[key]}`);
+}
